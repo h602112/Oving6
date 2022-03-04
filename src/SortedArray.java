@@ -12,6 +12,13 @@ public class SortedArray {
             a[i] = random.nextInt();
         }
 
+        long startTwo = System.currentTimeMillis();
+        for (int i = 0; i < number; i++) {
+            insertionSortTwoNumbers(a, n);
+        }
+        long endTwo = System.currentTimeMillis();
+        long timeElapsedTwo = endTwo-startTwo;
+        System.out.println(timeElapsedTwo);
 
         long start = System.currentTimeMillis();
         for (int i = 0; i < number; i++) {
@@ -34,6 +41,30 @@ public class SortedArray {
             while (!done && j >= 0) {
                 if (temp.compareTo(a[j]) < 0) {
                     a[j + 1] = a[j];
+                    j--;
+                } else {
+                    done = true;
+                }
+            }
+            a[j+1] = temp;
+        }
+    }
+    public static <T extends Comparable<? super T>> void insertionSortTwoNumbers(T[] a, int n) {
+        insertionSortTwoNumbers(a, 0, n-1);
+    }
+
+    public static <T extends Comparable<? super T>> void insertionSortTwoNumbers(T[] a, int start, int end) {
+        for (int i = start + 1; i <= end; i++) {
+            T temp = a[i];
+            int j = i-1;
+            int middle = start + (end-start)/2;
+            boolean done = false;
+            while (!done && j <= 0) {
+                if (temp.compareTo(a[end]) > 0) {
+                    a[j+3] = temp;
+                }
+                if (temp.compareTo(a[j]) < 0) {
+                    a[j+1] = a[j];
                     j--;
                 } else {
                     done = true;
