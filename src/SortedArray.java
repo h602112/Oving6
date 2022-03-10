@@ -3,8 +3,8 @@ import java.util.Random;
 public class SortedArray {
     public static void main(String[] args) {
         Random random = new Random();
-        int n = 80000;
-        int number = 10;
+        int n = 10;
+        int number = 1;
 
         Integer[] a = new Integer[n];
 
@@ -27,6 +27,9 @@ public class SortedArray {
         long end = System.currentTimeMillis();
         long timeElapsed = end - start;
         System.out.println(timeElapsed);
+        for (Integer i: a) {
+            System.out.println(i);
+        }
 
         long quickSortStart = System.currentTimeMillis();
         for (int i = 0; i < number; i++) {
@@ -157,6 +160,60 @@ public class SortedArray {
 
 
         return pivotIndex;
+    }
+    public static <T extends Comparable<? super T>> void mergeSort(T[] a, int n) {
+        mergeSort(a, 0, n-1);
+    }
+    public static <T extends Comparable<? super T>> void mergeSort(T[] a, int first, int last) {
+        @SuppressWarnings("unchecked")
+        T[] tempArray = (T[]) new Comparable<?>[a.length];
+        mergeSort(a, tempArray, first, last);
+    }
+    private static <T extends Comparable<? super T>> void mergeSort(T[] a, T[] temptab, int first, int last) {
+        if (first < last) {
+            int middle = first + (last-first)/2;
+            mergeSort(a, first, middle);
+            mergeSort(a, middle+1, last);
+            merge(a, first, middle, last);
+        }
+    }
+    private static <T extends Comparable<T>> void merge(T[] a, int first, int middle, int last) {
+        int size = last - first + 1;
+        T[] helpArray = (T[]) (new Comparable[size]);
+        int firstLeft = first;
+        int lastLeft = middle;
+
+        int firstRight = middle + 1;
+        int lastRight = last;
+        int index = 0;
+
+        while ((firstLeft <= lastLeft) && (firstRight <= lastRight)) {
+            if (a[firstLeft].compareTo(a[firstRight]) <= 0) {
+                helpArray[index] = a[firstLeft];
+                firstLeft++;
+            } else {
+                helpArray[index] = a[firstRight];
+                firstRight++;
+            }
+            index++;
+
+        }
+        while (firstLeft <= lastLeft) {
+            helpArray[index] = a[firstLeft];
+            firstLeft++;
+            index++;
+        }
+
+        while (firstRight <= lastRight) {
+            helpArray[index] = a[firstRight];
+            firstRight++;
+            index++;
+        }
+        index = 0;
+        for (int h = first; h <= last; h++) {
+            a[h] = helpArray[index];
+            index++;
+        }
     }
 
 }
