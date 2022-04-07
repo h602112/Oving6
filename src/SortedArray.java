@@ -1,44 +1,121 @@
 import java.util.Random;
+import java.util.Formatter;
+import java.text.DecimalFormat;
 
 public class SortedArray {
     public static void main(String[] args) {
-        Random random = new Random();
-        int n = 10;
-        int number = 1;
+//        Random random = new Random();
+//        int n = 10;
+//        int number = 1;
+//
+//        Integer[] a = new Integer[n];
+//
+//        for (int i = 0; i < n; i++) {
+//            a[i] = random.nextInt();
+//        }
+//
+//        //long startTwo = System.currentTimeMillis();
+//        //for (int i = 0; i < number; i++) {
+//          //  insertionSortTwoNumbers(a, n);
+//        //}
+//        //long endTwo = System.currentTimeMillis();
+//        //long timeElapsedTwo = endTwo - startTwo;
+//        //System.out.println(timeElapsedTwo);
+//
+//        long start = System.currentTimeMillis();
+//        for (int i = 0; i < number; i++) {
+//            insertionSort(a, n);
+//        }
+//        long end = System.currentTimeMillis();
+//        long timeElapsed = end - start;
+//        System.out.println(timeElapsed);
+//        for (Integer i: a) {
+//            System.out.println(i);
+//        }
+//
+//        long quickSortStart = System.currentTimeMillis();
+//        for (int i = 0; i < number; i++) {
+//            quickSort(a, n);
+//        }
+//        long quickSortEnd = System.currentTimeMillis();
+//        long quickSortElapsed = quickSortEnd-quickSortStart;
+//        System.out.println(quickSortElapsed);
+    	
+    	// Making sure the sorting methods gives the correct output
+//    	Integer[] a = {5, 6, 1, 8, 4, 2, 7, 3, 0, 9};
+//    	int n = 10;
+//    	for(int i = 0; i < n; i++) {
+//    		System.out.print(a[i] + " ");
+//    	}
+//    	System.out.println("\n");
+//    	selectionSort(a, n);
+//    	System.out.println("SelectionSort: ");
+//    	for(int i = 0; i < n; i++) {
+//    		System.out.print(a[i] + " ");
+//    	}
+//    	System.out.println("\n");
+//    	quickSort(a, n);
+//    	System.out.println("QuickSort: ");
+//    	for(int i = 0; i < n; i++) {
+//    		System.out.print(a[i] + " ");
+//    	}
+//    	System.out.println("\n");
+//    	insertionSort(a, n);
+//    	System.out.println("InsertionSort: ");
+//    	for(int i = 0; i < n; i++) {
+//    		System.out.print(a[i] + " ");
+//    	}
+//    	System.out.println("\n");
+//    	mergeSort(a, n);
+//    	System.out.println("MergeSort: ");
+//    	for(int i = 0; i < n; i++) {
+//    		System.out.print(a[i] + " ");
+//    	}
+    	
+//    	int n = 8;
+//    	Integer[] a = populateArrayWithRandomNumbers(n);
+//    	for(int i = 0; i < n; i++) {
+//    		System.out.print(a[i] + " ");
+//    	}
+//    	System.out.println("\n");
+//    	quickSort(a, n);
+//    	for (int i = 0; i < n; i++) {
+//    		System.out.print(a[i] + " ");
+//    	} 
+    	
+    	measureTimeForSorting();
 
-        Integer[] a = new Integer[n];
+    }
 
-        for (int i = 0; i < n; i++) {
-            a[i] = random.nextInt();
-        }
+    public static void measureTimeForSorting() {
+    	Formatter frmt = new Formatter();
+    	DecimalFormat dmf = new DecimalFormat("####.##");
+    	double avgTime = 0;
+    	int numMeasurements = 10;
+    	frmt.format("%13s %18s %22s %15s\n", "n", "Antall målinger", "Målt tid (gj.snitt)", "Teoretisk tid");
+    	for (int i = 32000; i <= 128000; i = i * 2) {
+    		Integer[] list = populateArrayWithRandomNumbers(i);
+    		for (int j = 0; j < numMeasurements; j++) {
+    			long start = System.nanoTime();
+    			insertionSort(list, 10);		// swap the methodcall with the desired sorting method
+    			long stop = System.nanoTime();
+    			double elapsedTime = (double)((stop - start));
+    			avgTime += elapsedTime;
+    		}
+    		avgTime /= 5;
+    		frmt.format("%15s %11s %22s %15s\n", i, numMeasurements, dmf.format(avgTime) + " ns", "");
+    	}
+    	System.out.println(frmt);
+    }
 
-        //long startTwo = System.currentTimeMillis();
-        //for (int i = 0; i < number; i++) {
-          //  insertionSortTwoNumbers(a, n);
-        //}
-        //long endTwo = System.currentTimeMillis();
-        //long timeElapsedTwo = endTwo - startTwo;
-        //System.out.println(timeElapsedTwo);
-
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < number; i++) {
-            insertionSort(a, n);
-        }
-        long end = System.currentTimeMillis();
-        long timeElapsed = end - start;
-        System.out.println(timeElapsed);
-        for (Integer i: a) {
-            System.out.println(i);
-        }
-
-        long quickSortStart = System.currentTimeMillis();
-        for (int i = 0; i < number; i++) {
-            quickSort(a, n);
-        }
-        long quickSortEnd = System.currentTimeMillis();
-        long quickSortElapsed = quickSortEnd-quickSortStart;
-        System.out.println(quickSortElapsed);
-
+    public static Integer[] populateArrayWithRandomNumbers(int n) {
+    	Random random = new Random();
+    	Integer[] arr = new Integer[n];
+    	for (int i = 0; i < n; i++) {
+    		Integer number = random.nextInt(50);
+    		arr[i] = number;
+    	}
+    	return arr;
     }
 
     public static <T extends Comparable<? super T>> void insertionSort(T[] a, int n) {
@@ -177,7 +254,7 @@ public class SortedArray {
             merge(a, first, middle, last);
         }
     }
-    private static <T extends Comparable<T>> void merge(T[] a, int first, int middle, int last) {
+    private static <T extends Comparable<? super T>> void merge(T[] a, int first, int middle, int last) {
         int size = last - first + 1;
         T[] helpArray = (T[]) (new Comparable[size]);
         int firstLeft = first;
